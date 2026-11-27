@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Create Course</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Create Course')
+
+@section('content')
     <h1>Create Course</h1>
 
-    @if($errors->any())
-        <div>
-            <h3>Please fix the following errors:</h3>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @include('partials.errors')
 
-    <form action="/courses" method="POST">
+    <form action="{{ route('courses.store') }}" method="POST">
         @csrf
 
         <div>
@@ -43,22 +33,22 @@
         <div>
             <label for="difficulty">Difficulty</label>
             <select id="difficulty" name="difficulty">
-                <option value="">-- Select --</option>
                 @foreach(['Easy', 'Medium', 'Hard'] as $level)
-                    <option value="{{ $level }}" {{ old('difficulty') === $level ? 'selected' : '' }}>{{ $level }}</option>
+                    <option value="{{ $level }}" {{ old('difficulty', '') === $level ? 'selected' : '' }}>{{ $level }}</option>
                 @endforeach
             </select>
         </div>
         <br>
         <div>
             <label for="is_active">Active</label>
-            <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}>
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" id="is_active" name="is_active" value="1"
+                   {{ old('is_active', true) ? 'checked' : '' }}>
         </div>
         <br>
         <button type="submit">Create Course</button>
     </form>
 
     <br>
-    <a href="/courses">Back to Courses</a>
-</body>
-</html>
+    <a href="{{ route('courses.index') }}">Back to Courses</a>
+@endsection
