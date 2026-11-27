@@ -1,23 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Course</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Edit Course')
+
+@section('content')
     <h1>Edit Course</h1>
 
-    @if($errors->any())
-        <div>
-            <h3>Please fix the following errors:</h3>
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    @include('partials.errors')
 
-    <form action="/courses/{{ $course->id }}" method="POST">
+    <form action="{{ route('courses.update', $course) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -52,13 +42,14 @@
         <br>
         <div>
             <label for="is_active">Active</label>
-            <input type="checkbox" id="is_active" name="is_active" value="1" {{ old('is_active', $course->is_active) ? 'checked' : '' }}>
+            <input type="hidden" name="is_active" value="0">
+            <input type="checkbox" id="is_active" name="is_active" value="1"
+                   {{ old('is_active', $course->is_active) ? 'checked' : '' }}>
         </div>
         <br>
         <button type="submit">Update Course</button>
     </form>
 
     <br>
-    <a href="/courses">Back to Courses</a>
-</body>
-</html>
+    <a href="{{ route('courses.index') }}">Back to Courses</a>
+@endsection
